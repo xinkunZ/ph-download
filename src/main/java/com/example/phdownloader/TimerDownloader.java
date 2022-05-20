@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,9 @@ public final class TimerDownloader {
     @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void run() {
         try {
+            lock.acquire();
             download();
+            lock.release();
         } catch (Exception e) {
             logger.error("error", e);
         }
@@ -65,8 +68,11 @@ public final class TimerDownloader {
         return FileUtils.readFileToString(file, StandardCharsets.UTF_8);
     }
 
+    private final Semaphore lock = new Semaphore(1);
+
     private void doDownload(final File batchFile) {
         try {
+            lock.acquire();
             final File python = new File("./PornHub-downloader-python/phdler.py");
             final Process process = Runtime.getRuntime()
                     .exec(new String[]{"python3", python.getAbsolutePath(), "custom", "batch", batchFile.getAbsolutePath()});
@@ -92,6 +98,7 @@ public final class TimerDownloader {
                 logger.info(line);
             }
             logger.info("download success!");
+            lock.release();
         } catch (Exception e) {
             logger.error("fail: ", e);
         }
