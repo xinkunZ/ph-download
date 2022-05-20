@@ -13,7 +13,12 @@
     <version>1.0-SNAPSHOT</version>
     <name>ph-downloader</name>
     <description>ph-downloader</description>
+
     <properties>
+        <docker.registry>hub.docker.com</docker.registry>
+        <docker_tag>${project.version}</docker_tag>
+        <!-- 以构建工程所在的父工程名作为镜像名 -->
+        <docker.name>${docker.registry}/zxk000000000/${project.parent.artifactId}:${docker_tag}</docker.name>
         <java.version>8</java.version>
         <repackage.classifier/>
         <kotlin.version>1.6.21</kotlin.version>
@@ -36,6 +41,11 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -126,4 +136,44 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.39.0</version>
+                        <executions>
+                            <execution>
+                                <id>build-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>push-image</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                                <configuration>
+                                    <pushRegistry>${docker.registry}</pushRegistry>
+                                    <retries>20</retries>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
