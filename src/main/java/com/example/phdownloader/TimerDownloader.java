@@ -13,11 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -37,9 +33,10 @@ public final class TimerDownloader {
         try {
             lock.acquire();
             download();
-            lock.release();
         } catch (Exception e) {
             logger.error("error", e);
+        } finally {
+            lock.release();
         }
     }
 
@@ -63,7 +60,8 @@ public final class TimerDownloader {
                 return "all files download success!";
             }
             Executors.newFixedThreadPool(1).submit(() -> doDownload(file));
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            logger.error("error:", e);
         }
         return FileUtils.readFileToString(file, StandardCharsets.UTF_8);
     }
@@ -76,31 +74,16 @@ public final class TimerDownloader {
             final File python = new File("./PornHub-downloader-python/phdler.py");
             final Process process = Runtime.getRuntime()
                     .exec(new String[]{"python3", python.getAbsolutePath(), "custom", "batch", batchFile.getAbsolutePath()});
-            final LocalDateTime start = LocalDateTime.now();
-            final Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if (Duration.between(LocalDateTime.now(), start).toHours() >= 8) {
-                        try {
-                            logger.warn("long time to download, kill the task!");
-                            process.destroy();
-                            timer.cancel();
-                        } catch (Exception e) {
-                            logger.error("cancel task fail!");
-                        }
-                    }
-                }
-            }, TimeUnit.HOURS.toMillis(1));
             String line = null;
             final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             while ((line = reader.readLine()) != null) {
                 logger.info(line);
             }
             logger.info("download success!");
-            lock.release();
         } catch (Exception e) {
             logger.error("fail: ", e);
+        } finally {
+            lock.release();
         }
     }
 }

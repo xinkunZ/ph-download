@@ -2,6 +2,7 @@ package com.example.phdownloader
 
 import org.apache.commons.lang3.StringUtils
 import org.jsoup.Jsoup
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.RequestEntity
 import org.springframework.web.client.RestTemplate
@@ -14,6 +15,7 @@ import java.util.regex.Pattern
  * @author zhangxinkun
  */
 object PhApi {
+    private val logger = LoggerFactory.getLogger(this::class.java);
 
     private const val url = "https://www.pornhub.com"
 
@@ -37,7 +39,9 @@ object PhApi {
     data class VideoName(val url: String, val name: String)
 
     fun playList(playList: String): List<VideoName> {
-        val html = getHtml(URI("$url/playlist/$playList")) ?: return emptyList()
+        val mainUrl = "$url/playlist/$playList"
+        val html = getHtml(URI(mainUrl)) ?: return emptyList()
+        logger.info("download -> $mainUrl")
         val pattern = Pattern.compile("lazyloadUrl = \"(.*)\"")
         val matcher = pattern.matcher(html)
 
@@ -47,7 +51,9 @@ object PhApi {
         val lazyUrl = if (matcher.find()) matcher.group(1) else null
         if (lazyUrl != null) {
             while (true) {
-                val lazyLoad = getHtml(URI("$url$lazyUrl&page=$i")) ?: break
+                val url = "$url$lazyUrl&page=$i"
+                logger.info("download -> $url")
+                val lazyLoad = getHtml(URI(url)) ?: break
                 result.addAll(lazyLoad.parseVideo("li a[href]"))
                 i++
             }
