@@ -183,24 +183,10 @@
                                         <argument>--platform=linux/amd64</argument>
                                         <argument>--rm</argument>
                                         <argument>--no-cache</argument>
+                                        <argument>--push</argument>
                                         <argument>-t</argument>
                                         <argument>${docker.name}</argument>
                                         <argument>.</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>push image</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>docker</executable>
-                                    <workingDirectory>${project.basedir}</workingDirectory>
-                                    <arguments>
-                                        <argument>push</argument>
-                                        <argument>${docker.name}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
