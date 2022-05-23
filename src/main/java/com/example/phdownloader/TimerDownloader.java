@@ -82,6 +82,10 @@ public final class TimerDownloader {
             while ((line = reader.readLine()) != null) {
                 logger.info(line);
             }
+            final BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            while ((line = error.readLine()) != null) {
+                logger.info(line);
+            }
             logger.info("download success!");
         } catch (Exception e) {
             logger.error("fail: ", e);
