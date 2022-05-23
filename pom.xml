@@ -178,7 +178,9 @@
                                     <executable>docker</executable>
                                     <workingDirectory>${project.basedir}</workingDirectory>
                                     <arguments>
+                                        <argument>buildx</argument>
                                         <argument>build</argument>
+                                        <argument>--platform=linux/amd64</argument>
                                         <argument>--rm</argument>
                                         <argument>--no-cache</argument>
                                         <argument>-t</argument>
