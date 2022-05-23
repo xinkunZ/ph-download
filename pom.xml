@@ -169,6 +169,7 @@
                         <version>3.0.0</version>
                         <executions>
                             <execution>
+                                <id>build image</id>
                                 <phase>deploy</phase>
                                 <goals>
                                     <goal>exec</goal>
@@ -187,6 +188,7 @@
                                 </configuration>
                             </execution>
                             <execution>
+                                <id>push image</id>
                                 <phase>deploy</phase>
                                 <goals>
                                     <goal>exec</goal>
