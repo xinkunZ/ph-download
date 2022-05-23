@@ -15,6 +15,7 @@
     <description>ph-downloader</description>
 
     <properties>
+        <maven.test.skip>true</maven.test.skip>
         <docker.registry>hub.docker.com</docker.registry>
         <docker_tag>${project.version}</docker_tag>
         <!-- 以构建工程所在的父工程名作为镜像名 -->
