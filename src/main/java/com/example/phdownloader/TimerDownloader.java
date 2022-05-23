@@ -44,11 +44,14 @@ public final class TimerDownloader {
     public String download() throws IOException {
         final File file = new File("./batch-file.txt");
         try {
+            FileUtils.deleteQuietly(file);
+            file.createNewFile();
             final String regex = "[\\pP\\pS\\pZ]";
             final List<PhApi.VideoName> videoNames = PhApi.INSTANCE.playList(config.getPlayList());
+            final File handpicked = new File(ConfigPath.download, "handpicked");
+            handpicked.mkdirs();
             final List<String> files = FileUtils.listFiles(
-                            new File(config.getDownloadPath(), "handpicked"),
-                            null, false)
+                            handpicked, null, false)
                     .stream().map(File::getName)
                     .map(it -> it.replaceAll(regex, ""))
                     .collect(Collectors.toList());

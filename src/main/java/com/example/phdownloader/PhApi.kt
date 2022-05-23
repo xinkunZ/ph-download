@@ -21,7 +21,7 @@ object PhApi {
 
     private fun getHtml(uri: URI): String? {
         Locale.setDefault(Locale.US)
-        val file = File("./cookie.txt");
+        val file = File(ConfigPath.cookie);
 
         val entity = RequestEntity.get(uri)
             .header(

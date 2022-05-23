@@ -13,7 +13,11 @@ so, you can add all you like videos into a single playlist,
 
 ## TODO
 
-- [ ] add docker support
+- [x] add docker support
+
+```
+docker run -d -p 8080:8080 -v ./config:/opt/docker/config -v ./download:/opt/docker/download zxk000000000/ph-downloader:latest
+```
 
 ## thanks
 

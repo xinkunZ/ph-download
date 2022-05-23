@@ -11,16 +11,6 @@ import org.springframework.stereotype.Component;
 public final class PhConfig {
     private String playList = "229677091";
 
-    private String downloadPath = "/Volumes/132XXXX3776/PT/auto";
-
-    public String getDownloadPath() {
-        return downloadPath;
-    }
-
-    public void setDownloadPath(final String downloadPath) {
-        this.downloadPath = downloadPath;
-    }
-
     public String getPlayList() {
         return playList;
     }
