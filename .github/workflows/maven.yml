@@ -22,5 +22,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: Docker Login
+      uses: docker/login-action@v2.0.0
+      with:
+        username: zxk000000000
+        password: 7baebfdf-4973-47a3-90aa-7bc45a81eeeb
     - name: Build with Maven
       run: mvn -B -Ddocker_tag=latest deploy -Pdocker --file pom.xml
