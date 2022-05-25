@@ -1,3 +1,10 @@
+![example workflow](https://github.com/xinkunZ/ph-download/actions/workflows/maven.yml/badge.svg)
+
+
+[![dockerhub](https://img.shields.io/docker/pulls/zxk000000000/ph-downloader?style=for-the-badge)](https://hub.docker.com/repository/docker/zxk000000000/ph-downloader)
+
+
+
 ## description
 
 ph-download is a spring boot server that can
@@ -8,7 +15,7 @@ download pxxnhub video automatically by cron expression
 this system has no config file or something to change.
 it just download all video in a given playlist
 
-so, you can add all you like videos into a single playlist,
+so, you can add all your love videos into a single playlist,
 `java -jar -Dpd-download.playList=xxxx ph-download.jar `
 
 ## TODO
