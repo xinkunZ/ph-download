@@ -1,4 +1,4 @@
-![example workflow](https://github.com/xinkunZ/ph-download/actions/workflows/maven.yml/badge.svg)
+[![example workflow](https://github.com/xinkunZ/ph-download/actions/workflows/maven.yml/badge.svg)](https://github.com/xinkunZ/ph-download/actions)
 
 
 [![dockerhub](https://img.shields.io/docker/pulls/zxk000000000/ph-downloader?style=for-the-badge)](https://hub.docker.com/repository/docker/zxk000000000/ph-downloader)
