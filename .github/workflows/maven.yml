@@ -30,7 +30,8 @@ jobs:
     - name: Git Clone Action
       uses: sudosubin/git-clone-action@v1.0.1
       with:
-        repository: https://github.com/xinkunZ/PornHub-downloader-python.git
+        repository: xinkunZ/PornHub-downloader-python
         ref: master
+        path: ./PornHub-downloader-python
     - name: Build with Maven
       run: mvn -B -Ddocker_tag=latest deploy -Pdocker --file pom.xml
