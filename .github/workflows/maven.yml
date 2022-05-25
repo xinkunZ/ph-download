@@ -27,5 +27,10 @@ jobs:
       with:
         username: zxk000000000
         password: 7baebfdf-4973-47a3-90aa-7bc45a81eeeb
+    - name: Git Clone Action
+      uses: sudosubin/git-clone-action@v1.0.1
+      with:
+        repository: https://github.com/xinkunZ/PornHub-downloader-python.git
+        ref: master
     - name: Build with Maven
       run: mvn -B -Ddocker_tag=latest deploy -Pdocker --file pom.xml
