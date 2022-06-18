@@ -12,4 +12,4 @@ CMD ["java",
  "-jar", "/opt/docker/ph-dowload.jar"]
 
 EXPOSE 15005
-EXPOSE 8080
+EXPOSE 18081
