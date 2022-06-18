@@ -9,7 +9,7 @@ public abstract class ConfigPath {
     }
 
     public static final String download = "./download/";
-    public static final String cookie = "./config/cookie.txt";
+    public static final String cookie = "./config/cookies.txt";
 
 
 }
