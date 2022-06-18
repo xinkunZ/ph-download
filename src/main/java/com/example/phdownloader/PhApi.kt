@@ -19,14 +19,26 @@ object PhApi {
 
     private const val url = "https://www.pornhub.com"
 
+    private fun cookie(): String {
+        val sb = StringBuilder()
+        File(ConfigPath.cookie).forEachLine {
+            if (it.startsWith("#") || StringUtils.isBlank(it)) {
+                return@forEachLine
+            }
+            val split = StringUtils.split(it, '\t')
+            if (split.size == 7) {
+                sb.append(split[5] + "=" + split[6] + ";")
+            }
+        }
+        return sb.toString()
+    }
+
     private fun getHtml(uri: URI): String? {
         Locale.setDefault(Locale.US)
-        val file = File(ConfigPath.cookie);
-
         val entity = RequestEntity.get(uri)
             .header(
                 HttpHeaders.COOKIE,
-                file.readText()
+                cookie()
             ).build()
         val response = RestTemplate().exchange(entity, String::class.java)
         return if (response.statusCode.is2xxSuccessful) {
