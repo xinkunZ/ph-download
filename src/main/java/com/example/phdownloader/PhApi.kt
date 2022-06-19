@@ -19,9 +19,12 @@ object PhApi {
 
     private const val url = "https://www.pornhub.com"
 
+    lateinit var phConfig: PhConfig
+
+
     private fun cookie(): String {
         val sb = StringBuilder()
-        File(ConfigPath.cookie).forEachLine {
+        File(phConfig.cookie).forEachLine {
             if (it.startsWith("#") || StringUtils.isBlank(it)) {
                 return@forEachLine
             }

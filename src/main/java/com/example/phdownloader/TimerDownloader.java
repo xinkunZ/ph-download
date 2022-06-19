@@ -13,7 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +33,7 @@ public final class TimerDownloader {
     @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void run() {
         try {
+            PhApi.INSTANCE.setPhConfig(config);
             lock.acquire();
             download();
         } catch (Exception e) {
@@ -48,11 +51,11 @@ public final class TimerDownloader {
             file.createNewFile();
             final String regex = "[\\pP\\pS\\pZ]";
             final List<PhApi.VideoName> videoNames = PhApi.INSTANCE.playList(config.getPlayList());
-            final File handpicked = new File(ConfigPath.download, "handpicked");
+            final File handpicked = new File(config.getDownload(), "handpicked");
             handpicked.mkdirs();
-            final List<String> files = FileUtils.listFiles(
-                            handpicked, null, false)
-                    .stream().map(File::getName)
+            final List<String> files = Arrays.stream(Optional.ofNullable(handpicked.listFiles())
+                            .orElse(new File[0]))
+                    .map(File::getName)
                     .map(it -> it.replaceAll(regex, ""))
                     .collect(Collectors.toList());
             videoNames.removeIf(it -> files.contains((it.getName() + ".mp4").replaceAll(regex, "")));
